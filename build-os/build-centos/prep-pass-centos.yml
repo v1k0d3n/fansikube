@@ -1,0 +1,25 @@
+---
+- hosts: centos
+  remote_user: centos
+  gather_facts: false
+  become_user: root
+  become: yes
+
+  vars_prompt:
+  - name: centos_password
+    prompt: "Enter password for user: centos"
+    private: yes
+    default: "atomic"
+
+  - name: root_password
+    prompt: "Enter password for user: root"
+    private: yes
+    default: "atomic"
+
+  tasks:
+
+  - name: "change password for user: centos"
+    shell: echo "{{ centos_password }}" | passwd --stdin centos
+
+  - name: "change password for user: root"
+    shell: echo "{{ root_password }}" | passwd --stdin root

@@ -1,0 +1,48 @@
+- hosts:
+    - masters
+  sudo: yes
+  tasks:
+    - file: path="{{ tmp_dir }}" state=directory
+
+    - name: Create OpenShift Registry template
+      shell: >-
+        oadm registry
+        -o json --service-account=registry
+        --credentials={{ openshift_master_config_dir }}/openshift-registry.kubeconfig
+        > "{{ tmp_dir }}/registry.json.in"
+      args:
+        creates: "{{ tmp_dir }}/registry.json.in"
+
+    - name: Set registry clusterIP address
+      script: >-
+        deployment_config_set.py --service={{ registry_svc_address }}
+        --output={{ tmp_dir }}/registry.json
+        {{ tmp_dir }}/registry.json.in
+      args:
+        creates: "{{ tmp_dir }}/registry.json"
+
+    - name: Lookup Registry service
+      command: oc get svc docker-registry
+      register: _registry_svc_get
+      ignore_errors: yes
+
+    - name: Create OpenShift Registry
+      command: oc create -f "{{ tmp_dir }}/registry.json"
+      when: _registry_svc_get.rc != 0
+
+    - name: Deploy OpenShift Router
+      command: >-
+        oadm router
+        --create --service-account=router --host-network=false
+        --credentials={{ openshift_master_config_dir }}/openshift-router.kubeconfig
+      register: _ortr_results
+      changed_when: "'service exists' not in _ortr_results.stdout"
+
+    - name: Create test user
+      command: htpasswd -b /etc/openshift/htpasswd test c0ntrail123
+
+  vars:
+    openshift_master_config_dir: /etc/origin/master
+    tmp_dir: /home/centos/.ansible/tmp
+    opencontrail_all_service_addresses: "{{ openshift_master_portal_net | default('172.30.0.0/16') }}"
+    registry_svc_address: "{{ opencontrail_all_service_addresses | ipaddr('net') | ipaddr(32) | ipaddr('address')}}"

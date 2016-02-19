@@ -1,0 +1,25 @@
+---
+- hosts: fedora
+  remote_user: fedora
+  gather_facts: false
+  become_user: root
+  become: yes
+
+  vars_prompt:
+  - name: fedora_password
+    prompt: "Enter password for user: fedora"
+    private: yes
+    default: "atomic"
+
+  - name: root_password
+    prompt: "Enter password for user: root"
+    private: yes
+    default: "atomic"
+
+  tasks:
+
+  - name: "change password for user: fedora"
+    shell: echo "{{ fedora_password }}" | passwd --stdin fedora
+
+  - name: "change password for user: root"
+    shell: echo "{{ root_password }}" | passwd --stdin root

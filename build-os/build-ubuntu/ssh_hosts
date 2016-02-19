@@ -1,0 +1,5 @@
+<servername>master,<master-ip>
+<servername>node01,<node01-ip>
+<servername>node02,<node02-ip>
+<servername>node03,<node03-ip>
+<servername>vrouter,<vrouter-ip>

@@ -1,0 +1,15 @@
+# Custom Fansikube Hosts: /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+#
+# Custom Docker Registry
+<custom-registry-ip> registry.domain.com registry # << custom registry entry if needed
+#
+# Fansikube: CentOS Masters
+<oc-centos-net-ip> <servername>master.domain.com <servername>master
+#
+# Fansikube: CentOS Nodes
+<oc-centos-net-ip> <servername>node01.domain.com <servername>node01
+<oc-centos-net-ip> <servername>node02.domain.com <servername>node02
+<oc-centos-net-ip> <servername>node03.domain.com <servername>node03
+<oc-centos-net-ip> <servername>vrouter.domain.com <servername>vrouter

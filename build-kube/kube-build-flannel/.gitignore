@@ -1,0 +1,5 @@
+kubernetes/
+myinventory
+inventory
+*.swp
+*~

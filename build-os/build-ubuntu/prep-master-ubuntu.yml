@@ -1,0 +1,41 @@
+---
+- hosts: ubuntu
+  remote_user: ubuntu
+  gather_facts: false
+  become_user: root
+  become: yes
+
+  tasks:
+
+  - name: add prerequisites for ansible to get started
+    apt: name={{ item }} update_cache=yes state=present state=latest
+    with_items:
+      - python-apt
+      - python
+      - sudo
+      - git
+      - wget
+
+  - name: update the system
+    apt: upgrade=full
+
+  - name: add hosts file to ubuntumaster and ubuntunodes
+    template: src="template/hosts.j2" dest="/etc/hosts" owner=root group=root mode=0644
+
+  - name: turn up the eth1 interface
+    template: src="template/eth1.cfg.j2" dest="/etc/network/interfaces.d/eth1.cfg" owner=root group=root mode=0644
+
+  - name: Add groups
+    group: name=nixadmins gid=11001 state=present
+
+  - name: add nixadmins in the sudoers group
+    lineinfile: "dest=/etc/sudoers backup=yes state=present create=yes regexp='^%nixadmins' line='%nixadmins ALL=(ALL) NOPASSWD: ALL'"
+
+  - name: copy private ssh key to the ubuntumaster
+    copy: src="rsa_keys/id_rsa" dest="/home/ubuntu/.ssh/" owner=ubuntu group=ubuntu mode=600
+
+  - name: copy public ssh key to the ubuntumaster
+    copy: src="rsa_keys/id_rsa.pub" dest="/home/ubuntu/.ssh/" owner=ubuntu group=ubuntu mode=644
+
+  - name: turn up eth1
+    raw: ifup eth1

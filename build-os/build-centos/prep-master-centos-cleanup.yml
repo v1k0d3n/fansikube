@@ -1,0 +1,13 @@
+---
+- hosts: centos
+  remote_user: centos
+  gather_facts: false
+  become_user: root
+  become: yes
+
+  tasks:
+
+  - name: WORKAROUND restart cockpit www because of pam issues
+    service: name={{ item }} state=restarted
+    with_items:
+      - cockpit

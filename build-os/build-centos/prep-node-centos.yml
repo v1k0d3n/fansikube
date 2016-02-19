@@ -1,0 +1,64 @@
+---
+- hosts: centos
+  remote_user: centos
+  gather_facts: false
+  become_user: root
+  become: yes
+
+  tasks:
+
+  - name: upgrade all packages
+    yum: name=* state=latest
+
+  - name: add required packages for ansible tasks
+    yum: name={{ item }} update_cache=yes state=installed state=latest
+    with_items:
+      - python
+      - libselinux-python
+
+  - name: add hosts file to <servername>master and <servername>nodes
+    template: src="template/hosts.j2" dest="/etc/hosts" owner=root group=root mode=0644
+
+  - name: add fasttrack repo for centos
+    template: src="template/testing-centos-repo.j2" dest="/etc/yum.repos.d/CentOS-fasttrack.repo" group=root mode=0644
+
+  - name: add copr testing repo for cockpit
+    template: src="template/testing-centos-cockpit-repo.j2" dest="/etc/yum.repos.d/cockpit-testing.repo" group=root mode=0644
+
+  - name: update packages after test repos enabled
+    yum: name=* state=latest
+
+  - name: set selinux policy
+    selinux: policy=targeted state=permissive
+
+  - name: install additional prerequisites for cockpit and ansible-kubernetes
+    yum: name={{ item }} update_cache=yes state=present state=latest
+    with_items:
+      - git
+      - wget
+      - cockpit
+      - cockpit-ws
+      - cockpit-doc
+      - cockpit-pcp
+      - cockpit-shell
+      - cockpit-docker
+      - cockpit-bridge
+      - cockpit-ostree
+      - cockpit-storaged
+      - cockpit-storaged
+      - cockpit-kubernetes
+      - cockpit-subscriptions
+      - cockpit-networkmanager
+      - cockpit-selinux-policy
+    ignore_errors: yes
+
+  - name: ensure that cockpit is not running www administration portal
+    service: name={{ item }} state=stopped enabled=no
+    with_items:
+      - cockpit
+
+  - name: Add groups
+    group: name=nixadmins gid=11001 state=present
+
+  - name: add nixadmins in the sudoers group
+    lineinfile: "dest=/etc/sudoers backup=yes state=present create=yes regexp='^%nixadmins' line='%nixadmins ALL=(ALL) NOPASSWD: ALL'"

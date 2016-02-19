@@ -1,0 +1,83 @@
+---
+- name: Create container-networking-ansible tar
+  local_action: command tar zcvf container-networking-ansible.tgz -C "{{ inventory_dir }}/../.." --exclude test --exclude .git .
+
+- name: tmp directory
+  file: path="{{ path_tmp }}" state=directory
+
+- name: Download kubernetes release
+  get_url: url=https://github.com/kubernetes/kubernetes/releases/download/v1.1.1/kubernetes.tar.gz dest="{{ path_tmp }}"
+  # creates: "{{ path_tmp }}/kubernetes.tar.gz"
+
+- name: Unpack kubernetes tarball
+  unarchive:
+    src: "{{ path_tmp }}/kubernetes.tar.gz"
+    dest: "{{ path_tmp }}"
+    copy: no
+    creates: "{{ path_tmp }}/kubernetes/server/kubernetes-server-linux-amd64.tar.gz"
+
+- name: Unpack linux binaries
+  unarchive:
+    src: "{{ path_tmp }}/kubernetes/server/kubernetes-server-linux-amd64.tar.gz"
+    dest: "{{ path_tmp }}"
+    copy: no
+    creates: "{{ path_tmp }}/kubernetes/server/bin/kube-apiserver"
+
+- name: Ansible configuration file
+  copy: src=ansible.cfg dest="~/.ansible.cfg"
+
+- name: Code directory
+  file: path="{{ path_src }}" state=directory
+
+- name: Fetch k8s provisioning scripts
+  git: repo=https://github.com/kubernetes/contrib.git dest="{{ path_src }}/contrib" update=no version=710435a
+
+- name: Cleanup opencontrail roles
+  file: path="{{ path_src }}/contrib/ansible/role/{{ item }}" state=absent
+  with_items:
+    - opencontrail_facts
+    - opencontrail
+    - opencontrail_provision
+
+- name: Extract opencontrail roles
+  unarchive: src=container-networking-ansible.tgz dest="{{ path_src }}/contrib/ansible"
+
+- name: Copy inventory file
+  copy: src="{{ inventory_dir }}/inventory.cluster" dest="{{ path_src }}/contrib/ansible/inventory"
+
+- name: Copy playbooks
+  copy: src="../common/{{ item }}" dest="{{ path_src }}/contrib/ansible"
+  with_items:
+    - resolution.yml
+    - validate.yml
+    - examples.yml
+
+- name: Enable opencontrail in group_vars
+  lineinfile:
+    dest: "{{ path_src }}/contrib/ansible/group_vars/all.yml"
+    regexp: "^networking: "
+    line: "networking: opencontrail"
+
+# ansible 2.x changed variable precendence such that group_vars has higher precendence than
+# variables declared in the inventory. So copy the value from inventory to group_vars.
+- name: Get the value of kube_service_addressses from the inventory file
+  command: awk '{ if (match($0, /^kube_service_addressses\s*=\s*(.*)/, groups) != 0) { print groups[1] } }' inventory
+  register: _inventory_svc_address
+  when: ansible_version.major >= 2
+
+- name: Set kube_service_addressses
+  lineinfile:
+    dest: "{{ path_src }}/contrib/ansible/group_vars/all.yml"
+    regexp: "^kube_service_addressses: "
+    line: "kube_service_addressses: {{ _inventory_svc_address.stdout }}"
+  when: ansible_version.major >= 2
+
+- name: Patch cluster.yml
+  patch:
+    src: cluster.patch
+    dest: "{{ path_src }}/contrib/ansible/cluster.yml"
+
+# - name: Configure address resolution
+#   command: ansible-playbook -i inventory resolution.yml
+#   args:
+#     chdir: "{{ path_src }}/contrib/ansible"

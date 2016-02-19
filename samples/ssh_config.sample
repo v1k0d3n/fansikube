@@ -1,0 +1,30 @@
+# Fancikube Custom SSH Config Example: ~/.ssh/config
+Host <servername>master
+    User ubuntu
+    Hostname <servername>master
+    IdentityFile $HOME/.ssh/<ssh-private-key>
+    StrictHostKeyChecking no
+
+Host <servername>node01
+    User ubuntu
+    Hostname <servername>node01
+    IdentityFile $HOME/.ssh/<ssh-private-key>
+    StrictHostKeyChecking no
+
+Host <servername>node02
+    User ubuntu
+    Hostname <servername>node02
+    IdentityFile $HOME/.ssh/<ssh-private-key>
+    StrictHostKeyChecking no
+
+Host <servername>node03
+    User ubuntu
+    Hostname <servername>node03
+    IdentityFile $HOME/.ssh/<ssh-private-key>
+    StrictHostKeyChecking no
+
+Host <servername>vrouter
+    User ubuntu
+    Hostname <servername>vrouter
+    IdentityFile $HOME/.ssh/<ssh-private-key>
+    StrictHostKeyChecking no

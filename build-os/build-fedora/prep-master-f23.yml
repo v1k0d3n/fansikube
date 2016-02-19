@@ -1,0 +1,68 @@
+---
+- hosts: fedora
+  remote_user: fedora
+  gather_facts: false
+  become_user: root
+  become: yes
+
+  tasks:
+
+  - name: add required packages for ansible tasks
+    raw: dnf install -y {{ item }}
+    with_items:
+      - python
+      - python-dnf
+      - libselinux-python
+      - yum
+
+  - name: add hosts file to <servername>master and <servername>nodes
+    template: src="template/hosts.j2" dest="/etc/hosts" owner=root group=root mode=0644
+
+  - name: copy testing repo
+    template: src="template/testing-fedora-repo.j2" dest="/etc/yum.repos.d/fedora-updates-testing.repo" owner=root group=root mode=0644
+
+  - name: copy cockpit testing repo
+    template: src="template/testing-fedora-cockpit-repo.j2" dest="/etc/yum.repos.d/cockpit-testing.repo" owner=root group=root mode=0644
+
+  - name: set selinux policy
+    selinux: policy=targeted state=permissive
+
+  - name: upgrade all packages
+    yum: name=* state=latest
+
+  - name: install additional prerequisites for cockpit and ansible-kubernetes
+    yum: name={{ item }} update_cache=yes state=present state=latest
+    with_items:
+      - sudo
+      - git
+      - wget
+      - cockpit
+      - cockpit-ws
+      - cockpit-pcp
+      - cockpit-shell
+      - cockpit-doc
+      - cockpit-bridge
+      - cockpit-ostree
+      - cockpit-docker
+      - cockpit-sosreport
+      - cockpit-kubernetes
+      - cockpit-subscriptions
+      - cockpit-storaged
+      - cockpit-networkmanager
+
+  - name: start and enable cockpit core and web services
+    service: name={{ item }} state=started enabled=yes
+    with_items:
+      - cockpit
+
+  - name: Add groups
+    group: name=nixadmins gid=11001 state=present
+
+  - name: add nixadmins in the sudoers group
+    lineinfile: "dest=/etc/sudoers backup=yes state=present create=yes regexp='^%nixadmins' line='%nixadmins ALL=(ALL) NOPASSWD: ALL'"
+
+  - name: cleanup tasks
+    raw: dnf remove -y {{ item }}
+    with_items:
+      - python-dnf
+      - libselinux-python
