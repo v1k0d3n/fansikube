@@ -11,7 +11,15 @@ Please refer to the "Current State" section near the bottom of this README for i
 
 ****
 
-####Preparation:
+####Preparation (UPDATED):
+I've recently updated the preparation process for Ubuntu (the reset will be updated shortly), so the preparation is much easier and straightforward!
+
+1. In the `build-os` directory, select which OS you wish to prepare.
+2. Edit the top variables section of `export-os-buildout.sh` file.
+3. Once complete, run the file within the same directory: `./export-os-buildout.sh`.
+4. Follow the instructions for the remainder of the buildout process.
+
+####Preparation (Old and soon to be retired):
 Please read the "Additional Considerations" section below if you plan on using real services provided by your Kubernetes cluster. I will try to update this as much as I can. If you want your containers to route natively to your LAN, prepare your Openstack environment first using the recommendations in that section. Otherwise, you can use a [L7 LoadBalancer](https://github.com/kubernetes/contrib/tree/master/service-loadbalancer) as outlined by the good folks at Google.
 
 Additional documentation is coming soon (using other techniques), but there are plenty of other resources available.
