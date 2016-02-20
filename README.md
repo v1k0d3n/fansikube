@@ -17,6 +17,7 @@ Please read the "Additional Considerations" section below if you plan on using r
 Additional documentation is coming soon (using other techniques), but there are plenty of other resources available.
 
 1. Download your Openstack-RC file, and place it into `build-os/openstack-rc/`
+
  ***Location:*** *Horizon > Project > Compute > Access and Security > API Access > Download OpenStack RC File*
 
 2. While in OpenStack, create these security groups for your project (I will automate this later):
