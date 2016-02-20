@@ -11,13 +11,31 @@ Please refer to the "Current State" section near the bottom of this README for i
 
 ****
 
-####Preparation (UPDATED):
+####Preparation:
 I've recently updated the preparation process for Ubuntu (the reset will be updated shortly), so the preparation is much easier and straightforward!
 
 1. In the `build-os` directory, select which OS you wish to prepare.
 2. Edit the top variables section of `export-os-buildout.sh` file.
 3. Once complete, run the file within the same directory: `./export-os-buildout.sh`.
 4. Follow the instructions for the remainder of the buildout process.
+
+####Cockpit Administration (CentOS|Fedora Only):
+CentOS|Fedora users will notice that I have included Cockpit repositories and have enabled Cockpit management for Kubernetes Masters|Nodes. If you haven't played with Cockpit already YOU NEED TO! It's an incredible project that allows you to manage your servers at a node-level (CentOS|Fedora OS), or even at a Kubernetes level. In order to automate this process, I've had to do a couple of extra things:
+
+**Password Prompts**
+You will be asked to provide passwords for Root/<OS> users after the completion of `./prep-kube-fedora.sh`. This *does not* enable password level access to your servers. This simply prepares the Cockpit-UI to allow password access.
+
+**SSH Key Generation**
+You will be told to generate RSA Keys for your automated build. This is so the keys can be uploaded to the `$server_name-master` node, and then you will need to place the public key into `template/authorized_keys.j2` (so this can be copied to the Kubernetes nodes|minions).
+
+**Cockpit Web-UI Access**
+Once `./prep-kube-fedora.sh` has completed updating packages, preparing the OS and Cockpit, and has been prepared for the Kubernetes deployment, you can access Cockpit on the public IP Address of your Kubernetes Master at https://$server_name-master:9090/. You should be able to access it via shortname, since you've been instructed to add these hosts to your local /etc/hosts file, but make sure to allow access to port 9090 in your Openstack Security Groups.
+
+***User:*** fedora|centos (depending on OS)
+***Pass:*** password you entered when prompted
+
+Once you have logged into Cockpit, take a look around. You will be able to add all of your servers into the single administration pane by navigating to *Dashboard* > *"+"* (it's blue), and when prompted enter the name or IP address of the server you want to manage. It will be added to your inventory. Once you have install Kubernetes (as described below), you will then be able to manage your entire Kubernetes environment, which includes uploading YAML files for launching containers and services, and scaling containers across the entire cluster. Cockpit is really cool, and not nearly as known as it should be! I hope you really like it! From an operations standpoint, it's really hard to beat!
+
 
 ####Kubernetes Deployment:
 
