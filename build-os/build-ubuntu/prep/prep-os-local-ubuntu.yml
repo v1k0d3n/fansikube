@@ -1,0 +1,85 @@
+---
+- hosts: localhost
+
+  vars_prompt:
+  - name: server_name
+    prompt: "Enter prepending servername: "
+    private: no
+    default: "ubuntu"
+
+  - name: domain_name
+    prompt: "Enter the domain: "
+    private: no
+    default: "domain.com"
+
+  - name: os_build_ubuntu_keypair
+    prompt: "Enter Openstack Deployment Keypair Name or ID: "
+    private: no
+
+  - name: os_build_ubuntu_flavor
+    prompt: "Enter Openstack Flavor Name: "
+    private: no
+
+  - name: os_build_ubuntu_image
+    prompt: "Enter Openstack Image ID: "
+    private: no
+
+  - name: os-build-ubuntu-nic0
+    prompt: "Enter Primary Network ID for eth0: "
+    private: no
+
+  - name: os-build-ubuntu-nic1
+    prompt: "Enter Primary Network ID for eth1: "
+    private: no
+
+  - name: os_ubuntu_sgroups
+    prompt: "Enter Security Groups: "
+    private: no
+    default: "SG1,SG2,SG3"
+
+  tasks:
+
+  - name: replace all instances of server_name in template/ dir
+    local_action: raw grep -rl $server_name . | xargs sed -i .bak s@$server_name@${{ server_name }}@g ../template/*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of server_name in local dir
+    local_action: raw grep -rl $server_name . | xargs sed -i .bak s@$server_name@${{ server_name }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of os_build_ubuntu_image in local dir
+    local_action: raw grep -rl $os_build_ubuntu_image . | xargs sed -i .bak s@$os_build_ubuntu_image@${{ os_build_ubuntu_image }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of os_build_ubuntu_flavor in local dir
+    local_action: raw grep -rl $os_build_ubuntu_flavor . | xargs sed -i .bak s@$os_build_ubuntu_flavor@${{ os_build_ubuntu_flavor }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of os_build_ubuntu_keypair in local dir
+    local_action: raw grep -rl $os_build_ubuntu_keypair . | xargs sed -i .bak s@$os_build_ubuntu_keypair@${{ os_build_ubuntu_keypair }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of os_ubuntu_sgroups in local dir
+    local_action: raw grep -rl $os_ubuntu_sgroups . | xargs sed -i .bak s@$os_ubuntu_sgroups@${{ os_ubuntu_sgroups }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of os-build-ubuntu-nic0 in local dir
+    local_action: raw grep -rl $os-build-ubuntu-nic0 . | xargs sed -i .bak s@$os-build-ubuntu-nic0@${{ os-build-ubuntu-nic0 }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of os-build-ubuntu-nic1 in local dir
+    local_action: raw grep -rl $os-build-ubuntu-nic1 . | xargs sed -i .bak s@$os-build-ubuntu-nic1@${{ os-build-ubuntu-nic1 }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes
+
+  - name: replace all instances of domain_name in local dir
+    local_action: raw grep -rl $domain_name . | xargs sed -i .bak s@$domain_name@${{ domain_name }}@g ../*
+    delegate_to: 127.0.0.1
+    ignore_errors: yes

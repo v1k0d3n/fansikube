@@ -1,6 +1,6 @@
 #!/bin/bash
-nova delete <servername>master
-nova delete <servername>node01
-nova delete <servername>node02
-nova delete <servername>node03
-nova delete <servername>vrouter
+nova delete server_name-master
+nova delete server_name-node01
+nova delete server_name-node02
+nova delete server_name-node03
+nova delete server_name-vrouter
