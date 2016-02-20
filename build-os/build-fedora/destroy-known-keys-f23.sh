@@ -1,2 +1,2 @@
 #!/bin/bash
-sed '/<servername>/d' ~/.ssh/known_hosts > ~/.ssh/known_hosts
+sed '/"$server_name_fedora"-/d' ~/.ssh/known_hosts > ~/.ssh/known_hosts

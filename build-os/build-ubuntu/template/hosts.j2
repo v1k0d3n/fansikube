@@ -3,13 +3,13 @@
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 #
 # Add Custom Docker Registry
-#registry_ip $registry_name.$domain_name registry
+#registry_ip $registry_name.$domain_name_ubuntu registry
 #
 # Fansikube: Ubuntu Masters
-master_ip "$server_name"-master.$domain_name "$server_name"-master
+master_ip "$server_name_ubuntu"-master.$domain_name_ubuntu "$server_name_ubuntu"-master
 #
 # Fansikube: Ubuntu Nodes
-$node01_ip "$server_name"-node01.$domain_name "$server_name"-node01
-$node02_ip "$server_name"-node02.$domain_name "$server_name"-node02
-$node03_ip "$server_name"-node03.$domain_name "$server_name"-node03
-$vrouter_ip "$server_name"-vrouter.$domain_name "$server_name"-vrouter
+$node01_ip "$server_name_ubuntu"-node01.$domain_name_ubuntu "$server_name_ubuntu"-node01
+$node02_ip "$server_name_ubuntu"-node02.$domain_name_ubuntu "$server_name_ubuntu"-node02
+$node03_ip "$server_name_ubuntu"-node03.$domain_name_ubuntu "$server_name_ubuntu"-node03
+$vrouter_ip "$server_name_ubuntu"-vrouter.$domain_name_ubuntu "$server_name_ubuntu"-vrouter

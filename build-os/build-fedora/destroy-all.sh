@@ -1,5 +1,6 @@
 #!/bin/bash
-nova delete <servername>master
-nova delete <servername>node01
-nova delete <servername>node02
-nova delete <servername>node03
+nova delete "$server_name_fedora"-master
+nova delete "$server_name_fedora"-node01
+nova delete "$server_name_fedora"-node02
+nova delete "$server_name_fedora"-node03
+nova delete "$server_name_fedora"-vrouter

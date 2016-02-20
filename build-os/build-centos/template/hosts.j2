@@ -2,14 +2,14 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 #
-# Custom Docker Registry
-<custom-registry-ip> registry.domain.com registry # << custom registry entry if needed
+# Add Custom Docker Registry
+#registry_ip $registry_name.$domain_name_ubuntu registry
 #
-# Fansikube: CentOS Masters
-<oc-centos-net-ip> <servername>master.domain.com <servername>master
+# Fansikube: Ubuntu Masters
+master_ip "$server_name_ubuntu"-master.$domain_name_ubuntu "$server_name_ubuntu"-master
 #
-# Fansikube: CentOS Nodes
-<oc-centos-net-ip> <servername>node01.domain.com <servername>node01
-<oc-centos-net-ip> <servername>node02.domain.com <servername>node02
-<oc-centos-net-ip> <servername>node03.domain.com <servername>node03
-<oc-centos-net-ip> <servername>vrouter.domain.com <servername>vrouter
+# Fansikube: Ubuntu Nodes
+$node01_ip "$server_name_ubuntu"-node01.$domain_name_ubuntu "$server_name_ubuntu"-node01
+$node02_ip "$server_name_ubuntu"-node02.$domain_name_ubuntu "$server_name_ubuntu"-node02
+$node03_ip "$server_name_ubuntu"-node03.$domain_name_ubuntu "$server_name_ubuntu"-node03
+$vrouter_ip "$server_name_ubuntu"-vrouter.$domain_name_ubuntu "$server_name_ubuntu"-vrouter

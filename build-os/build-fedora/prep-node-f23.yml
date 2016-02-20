@@ -5,6 +5,10 @@
   become_user: root
   become: yes
 
+  vars:
+
+    - server_name_fedora: "{{ lookup('env','server_name_fedora') }}"
+
   tasks:
 
   - name: add required packages for ansible tasks

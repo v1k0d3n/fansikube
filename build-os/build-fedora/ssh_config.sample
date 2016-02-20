@@ -1,0 +1,31 @@
+#
+# Fancikube Custom SSH Config Example: ~/.ssh/config
+Host "$server_name_fedora"-master
+    User fedora
+    Hostname "$server_name_fedora"-master
+    IdentityFile $HOME/.ssh/$keypair_priv
+    StrictHostKeyChecking no
+
+Host "$server_name_fedora"-node01
+    User fedora
+    Hostname "$server_name_fedora"-node01
+    IdentityFile $HOME/.ssh/$keypair_priv
+    StrictHostKeyChecking no
+
+Host "$server_name_fedora"-node02
+    User fedora
+    Hostname "$server_name_fedora"-node02
+    IdentityFile $HOME/.ssh/$keypair_priv
+    StrictHostKeyChecking no
+
+Host "$server_name_fedora"-node03
+    User fedora
+    Hostname "$server_name_fedora"-node03
+    IdentityFile $HOME/.ssh/$keypair_priv
+    StrictHostKeyChecking no
+
+Host "$server_name_fedora"-vrouter
+    User fedora
+    Hostname "$server_name_fedora"-vrouter
+    IdentityFile $HOME/.ssh/$keypair_priv
+    StrictHostKeyChecking no

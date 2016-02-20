@@ -7,7 +7,7 @@
 
   vars:
 
-    - server_name: "{{ lookup('env','server_name') }}"
+    - server_name_ubuntu: "{{ lookup('env','server_name_ubuntu') }}"
 
   tasks:
 

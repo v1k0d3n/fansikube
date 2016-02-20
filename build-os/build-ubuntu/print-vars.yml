@@ -2,9 +2,9 @@
 - hosts: localhost
 
   vars:
-    - server_name: "{{ lookup('env','server_name') }}"
+    - server_name_ubuntu: "{{ lookup('env','server_name_ubuntu') }}"
 
-    - domain_name: "{{ lookup('env','domain_name') }}"
+    - domain_name_ubuntu: "{{ lookup('env','domain_name_ubuntu') }}"
 
     - os_build_ubuntu_keypair: "{{ lookup('env','os_build_ubuntu_keypair') }}"
 
@@ -21,9 +21,9 @@
 
   tasks:
 
-    - debug: msg="Your server name is set to {{ server_name }}"
+    - debug: msg="Your server name is set to {{ server_name_ubuntu }}"
 
-    - debug: msg="Your domain name is set to {{ domain_name }}"
+    - debug: msg="Your domain name is set to {{ domain_name_ubuntu }}"
 
     - debug: msg="Your keypair is set to {{ os_build_ubuntu_keypair }}"
 

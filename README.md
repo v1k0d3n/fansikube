@@ -19,65 +19,6 @@ I've recently updated the preparation process for Ubuntu (the reset will be upda
 3. Once complete, run the file within the same directory: `./export-os-buildout.sh`.
 4. Follow the instructions for the remainder of the buildout process.
 
-####Preparation (Old and soon to be retired):
-Please read the "Additional Considerations" section below if you plan on using real services provided by your Kubernetes cluster. I will try to update this as much as I can. If you want your containers to route natively to your LAN, prepare your Openstack environment first using the recommendations in that section. Otherwise, you can use a [L7 LoadBalancer](https://github.com/kubernetes/contrib/tree/master/service-loadbalancer) as outlined by the good folks at Google.
-
-Additional documentation is coming soon (using other techniques), but there are plenty of other resources available.
-
-1. Download your Openstack-RC file, and place it into `build-os/openstack-rc/`
-
- ***Location:*** *Horizon > Project > Compute > Access and Security > API Access > Download OpenStack RC File*
-
-2. While in OpenStack, create these security groups for your project (I will automate this later):
-
-        oc-<os>-kubernetes
-        oc-<os>-kubernetes-services
-        oc-<os>-opencontrail
-
-  *Make sure your default policy allows ssh and icmp (this should be obvious, but with new projects sometimes we forget).*
-3. Create ssh keys and place them into `build-os/build-<os>/rsa_keys/`
-  command: `ssh-keygen -t rsa -C "<servername>master@<yourdomain>.com"`
- *Note: Defaults are fine. Just hit enter, and do not create a password for your private key.*
-4. Modify the openstack build script: `build-os/build-<os>/prep-infrastructure-<os>.sh`
-   Modify the following settings (I will turn these into variables soon):
-
-        os-build-<os>-image
-        os-build-<os>-flavor
-        os-build-<os>-keypair
-        os-build-<os>-security-groups (multiple allowed, with comma separation)
-        os-build-<os>-nic0
-        os-build-<os>-nic1
-        os-build-<os>-servername
-
-5. Do this for the entire project (find and replace). My preference is to CLI or use [Atom Project](https://atom.io).
-  *Note: If you do this replace for the entire project, then these other scripts will be work also*:
-
-        destroy-all.sh
-        inventory.ini
-        prep-infrastructure-rebuild-<os>.sh
-        prep-infrastructure-<os>.sh
-        prep-kube-<os>.sh
-        prep-master-ubuntu.yml
-        prep-node-ubuntu.yml
-
-6. Source your `Openstack-rc.sh` file in `build-os/openstack-rc/`.
-
-7. Collect the IP Addresses used for each of the nodes.
-
-8. Create hosts entries in the /etc/hosts file of your deployment host (where you're going to run the Ansible playbooks from).
-
-9. Also edit the `build-os/template/hosts.j2` template file with your hosts/ip-address information. Use the addresses from oc-<os>-net, if you're using the additional considerations below.
-
-10. Place the hosts and their corresponding public/reachable IP addresses into the file `build-os/build-<os>/ssh_hosts`
-
-11. Using the the file `build-os/samples/ssh_config.sample`, add this content to the end of your local `~/.ssh/config` file.
-
-12. Run the script `build-os/prep-local-known-keys.sh`. This will add the keys to your local ~/.ssh/known_hosts file, and prepare for your first Ansible run.
-
-13. **BEFORE CONTINUING:** FEDORA/CENTOS USERS - You MUST review the template located in `build-os/build-<os>/template/authorized_keys`. You will need to add the public ssh key that you used for Openstack AND add the public key's created in `build-os/build-<os>/rsa_keys`. This is to prepare the OS for Cockpit administration. Note, CentOS|Fedora users will also be prompted for the <os> and root passwords (requires input). This is used for the Cockpit Administration Web-UI. You will need to ensure that port 9090 is in your cockpit Openstack security group.
-
-14. Now, run the `build-os/prep-kube.sh script to prepare your hosts for the Kubernetes installation.
-
 ####Kubernetes Deployment:
 
 1. Choose which deployment you want use: Flannel|Opencontrail, and navigate to the appropriate project folder `build-kube/kube-build-<sdn-project>`

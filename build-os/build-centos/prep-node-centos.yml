@@ -5,6 +5,10 @@
   become_user: root
   become: yes
 
+  vars:
+
+    - server_name_centos: "{{ lookup('env','server_name_centos') }}"
+
   tasks:
 
   - name: upgrade all packages

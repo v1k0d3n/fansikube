@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+
+  vars:
+    - server_name_centos: "{{ lookup('env','server_name_centos') }}"
+
+    - domain_name_centos: "{{ lookup('env','domain_name_centos') }}"
+
+    - os_build_centos_keypair: "{{ lookup('env','os_build_centos_keypair') }}"
+
+    - os_build_centos_image: "{{ lookup('env','os_build_centos_image') }}"
+
+    - os_build_centos_flavor: "{{ lookup('env','os_build_centos_flavor') }}"
+
+    - os_build_centos_nic0: "{{ lookup('env','os_build_centos_nic0') }}"
+
+    - os_build_centos_nic1: "{{ lookup('env','os_build_centos_nic1') }}"
+
+    - os_centos_sgroups: "{{ lookup('env','os_centos_sgroups') }}"
+
+
+  tasks:
+
+    - debug: msg="Your server name is set to {{ server_name_centos }}"
+
+    - debug: msg="Your domain name is set to {{ domain_name_centos }}"
+
+    - debug: msg="Your keypair is set to {{ os_build_centos_keypair }}"
+
+    - debug: msg="Your image is set to {{ os_build_centos_image }}"
+
+    - debug: msg="Your nic0 is set to {{ os_build_centos_nic0 }}"
+
+    - debug: msg="Your nic1 is set to {{ os_build_centos_nic1 }}"
+
+    - debug: msg="Your security groups are set to {{ os_centos_sgroups }}"
