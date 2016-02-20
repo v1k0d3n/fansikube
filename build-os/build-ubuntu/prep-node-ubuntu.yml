@@ -5,6 +5,10 @@
   become_user: root
   become: yes
 
+  vars:
+
+    - server_name: "{{ lookup('env','server_name') }}"
+
   tasks:
 
   - name: add prerequisites for ansible to get started
