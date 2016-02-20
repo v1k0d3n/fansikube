@@ -1,0 +1,7 @@
+20160220-1550  Brandon B. Jozsa  <bjozsa@jinkit.com>
+
+build-os/build-ubuntu/
+
+    * Added some ghetto automation, using variables. Deployment preparation
+      is now completed by running completing variable information and running
+      '. export-os-buildout.sh'.
