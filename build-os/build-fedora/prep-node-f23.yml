@@ -19,7 +19,7 @@
       - libselinux-python
       - yum
 
-  - name: add hosts file to <servername>master and <servername>nodes
+  - name: add hosts file to {{ server_name_fedora }}-nodes
     template: src="template/hosts.j2" dest="/etc/hosts" owner=root group=root mode=0644
 
   - name: copy testing repo
