@@ -9,6 +9,16 @@ This repository provides you with working Ansible playbooks and a few ancillary 
 
 Please refer to the "Current State" section near the bottom of this README for information on where things stand currently with this repository. Also, check out the post installation tasks for the various SDN environments, especially if this is new these types of deployments are new to you. I plan on making them very helpful as this repository matures.
 
+The goal is to produce extremely flexible Kubernetes deployments with the least amount of prerequisites. In reality, you can either install the minimal set of prerequisites on your deployment host, or use a Docker container as your deployment host (which you can destroy after your deployment):
+
+**Docker Container Method**
+ * `docker run -dit --name <custom_name> quay.io/v1k0d3n/fed-dev /bin/bash`
+ * `docker exec -it <container_id> bash`
+
+**Installing Prerequisites**
+ * Openstack CLI Tools
+ * Ansible
+
 ****
 
 ####Preparation:
@@ -31,7 +41,7 @@ You will be told to generate RSA Keys for your automated build. This is so the k
 **Cockpit Web-UI Access**
 Once `./prep-kube-fedora.sh` has completed updating packages, preparing the OS and Cockpit, and has been prepared for the Kubernetes deployment, you can access Cockpit on the public IP Address of your Kubernetes Master at https://$server_name-master:9090/. You should be able to access it via shortname, since you've been instructed to add these hosts to your local /etc/hosts file, but make sure to allow access to port 9090 in your Openstack Security Groups.
 
-***User:*** fedora|centos (depending on OS)
+***User:*** fedora|centos (depending on OS)<br>
 ***Pass:*** password you entered when prompted
 
 Once you have logged into Cockpit, take a look around. You will be able to add all of your servers into the single administration pane by navigating to *Dashboard* > *"+"* (it's blue), and when prompted enter the name or IP address of the server you want to manage. It will be added to your inventory. Once you have install Kubernetes (as described below), you will then be able to manage your entire Kubernetes environment, which includes uploading YAML files for launching containers and services, and scaling containers across the entire cluster. Cockpit is really cool, and not nearly as known as it should be! I hope you really like it! From an operations standpoint, it's really hard to beat!
