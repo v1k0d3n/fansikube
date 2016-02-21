@@ -1,7 +1,7 @@
-### Ansible + IaaS (Openstack) + OS [Centos|Fedora|Ubuntu] + Kubernetes + Opencontrail (or Flannel if you choose)
+### Ansible + IaaS (Openstack) + OS [Centos | Fedora | Ubuntu] + Kubernetes + Opencontrail (or Flannel if you choose)
 This repository provides you with working Ansible playbooks and a few ancillary scripts to perform the following:
 
-  * Create Openstack Instances of your choice: CentOS|Fedora|Ubuntu
+  * Create Openstack Instances of your choice: CentOS | Fedora|Ubuntu
   * Tools to help manage your PoC (rebuild or destroy without losing IP Address information in Openstack, and without having to recreate inventories, ssh known_hosts entries, or host entries)
   * Working Ansible playbooks to prepare your instances for a Kubernetes deployment inside of Openstack
   * Working Ansible playbooks to prepare and turn up Kubernetes with your choice of SDN's: Contrail|Flannel (with more coming soon, Weave next followed by Calico).
@@ -29,8 +29,8 @@ I've recently updated the preparation process for Ubuntu (the reset will be upda
 3. Once complete, run the file within the same directory: `./export-os-buildout.sh`.
 4. Follow the instructions for the remainder of the buildout process.
 
-####Cockpit Administration (CentOS|Fedora Only):
-CentOS|Fedora users will notice that I have included Cockpit repositories and have enabled Cockpit management for Kubernetes Masters|Nodes. If you haven't played with Cockpit already YOU NEED TO! It's an incredible project that allows you to manage your servers at a node-level (CentOS|Fedora OS), or even at a Kubernetes level. In order to automate this process, I've had to do a couple of extra things:
+####Cockpit Administration (CentOS | Fedora Only):
+CentOS | Fedora users will notice that I have included Cockpit repositories and have enabled Cockpit management for Kubernetes Masters|Nodes. If you haven't played with Cockpit already YOU NEED TO! It's an incredible project that allows you to manage your servers at a node-level (CentOS | Fedora OS), or even at a Kubernetes level. In order to automate this process, I've had to do a couple of extra things:
 
 **Password Prompts**
 You will be asked to provide passwords for Root/<OS> users after the completion of `./prep-kube-fedora.sh`. This *does not* enable password level access to your servers. This simply prepares the Cockpit-UI to allow password access.
