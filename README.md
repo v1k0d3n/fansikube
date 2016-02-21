@@ -1,11 +1,22 @@
-### Ansible + IaaS (Openstack) + OS [Centos | Fedora | Ubuntu] + Kubernetes + Opencontrail (or Flannel if you choose)
-This repository provides you with working Ansible playbooks and a few ancillary scripts to perform the following:
+### Flexible Ansible Deployments for Kubernetes
+The heavy lifting for this project was taken from the great work done at [kubernetes/contrib/ansible](https://github.com/kubernetes/contrib/ansible), but I wanted more from the project (probably things that would never be merged in). Originally, I was standing up these deployments in my own environment, but I figured it may be best to share these with others (even though the state may flux a bit here and there).
 
-  * Create Openstack Instances of your choice: CentOS | Fedora|Ubuntu
-  * Tools to help manage your PoC (rebuild or destroy without losing IP Address information in Openstack, and without having to recreate inventories, ssh known_hosts entries, or host entries)
-  * Working Ansible playbooks to prepare your instances for a Kubernetes deployment inside of Openstack
-  * Working Ansible playbooks to prepare and turn up Kubernetes with your choice of SDN's: Contrail|Flannel (with more coming soon, Weave next followed by Calico).
-  * Troubleshooting tip and commands to help you understand your environment and get started with this wonderful technology!
+My goal is to do the following:
+
+  * Support multiple IaaS solutions (Openstack primary, followed by Azure and AWS)
+  * Provide a wider range of OS support (I would like to include CoreOS/RancherOS)
+  * Integrate only a minimum set of [contrib/](https://github.com/kubernetes/contrib/) requirements to prevent breaking these deployments.
+  * Correct and document changes quickly, as opposed to the slow documentation and merge periods I noticed upstream.
+  * Enable additional orchestration tooling like Cockpit for CentOS / Fedora and Weave Scope (coming soon).
+  * Add additional SDN solutions for testing purposes (looking to add Ansible deployments for Weave Net, Calico and others).
+
+In it's current state, this repository provides you with working Ansible playbooks and ancillary scripts to perform the following:
+
+  * Create Openstack Instances of your choice: CentOS | Fedora | Ubuntu.
+  * Tools to help manage a PoC; optionally rebuild/destroy instances in Openstack without having to recreate inventories, ssh `known_hosts` entries, host or IP information.
+  * Working Ansible playbooks to prepare your instances for a Kubernetes deployment inside of Openstack.
+  * Working Ansible playbooks to prepare and turn up Kubernetes with your choice of SDN's: Contrail | Flannel (Weave Net, Calico and others coming soon).
+  * Troubleshooting tips/documentation and commands to help you understand your environment, and help others get started with each of these solutions.
 
 Please refer to the "Current State" section near the bottom of this README for information on where things stand currently with this repository. Also, check out the post installation tasks for the various SDN environments, especially if this is new these types of deployments are new to you. I plan on making them very helpful as this repository matures.
 
