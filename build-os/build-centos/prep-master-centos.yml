@@ -29,6 +29,9 @@
   - name: add copr testing repo for cockpit
     template: src="template/testing-centos-cockpit-repo.j2" dest="/etc/yum.repos.d/cockpit-testing.repo" group=root mode=0644
 
+  - name: copy configuration for eth1
+    template: src="template/ifcfg-eth1.j2" dest="/etc/sysconfig/network-scripts/ifcfg-eth1" owner=root group=root mode=0644
+
   - name: update packages after test repos enabled
     yum: name=* state=latest
 
@@ -66,3 +69,6 @@
 
   - name: add nixadmins in the sudoers group
     lineinfile: "dest=/etc/sudoers backup=yes state=present create=yes regexp='^%nixadmins' line='%nixadmins ALL=(ALL) NOPASSWD: ALL'"
+
+  - name: restart eth1
+    service: name=network state=restarted args=eth1

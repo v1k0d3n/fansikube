@@ -2,15 +2,15 @@
 #
 # SEE README FOR VARIABLE DETAILS
 # Make the following changes based on your environment:
-keypair_priv=
-server_name_fedora=
-domain_name_fedora=
-os_build_fedora_keypair=
-os_build_fedora_flavor=
-os_build_fedora_image=
-os_build_fedora_nic0=
-os_build_fedora_nic1=
-os_fedora_sgroups=
+keypair_priv=terraform
+server_name_fedora=fedora
+domain_name_fedora=jinkit.com
+os_build_fedora_keypair=terransikube-deploy
+os_build_fedora_flavor=J2.SML.8G.80XG
+os_build_fedora_image=2a5d519b-e782-45d4-b410-453f29341f3b
+os_build_fedora_nic0=79989389-61c3-4341-9fcc-15bfdb741b8b
+os_build_fedora_nic1=f69c487c-0e82-43e1-a7e0-90e71261387f
+os_fedora_sgroups=default,oc-ubuntu-kubernetes,oc-ubuntu-kubernetes-services,oc-ubuntu-opencontrail
 #
 #
 # DO NOT EDIT BELOW THIS LINE:

@@ -11,6 +11,9 @@
 
   tasks:
 
+  - name: make sure things are clean before starting
+    raw:  dnf clean all
+
   - name: add required packages for ansible tasks
     raw: dnf install -y {{ item }}
     with_items:
@@ -27,6 +30,9 @@
 
   - name: copy cockpit testing repo
     template: src="template/testing-fedora-cockpit-repo.j2" dest="/etc/yum.repos.d/cockpit-testing.repo" owner=root group=root mode=0644
+
+  - name: copy configuration for eth1
+    template: src="template/ifcfg-eth1.j2" dest="/etc/sysconfig/network-scripts/ifcfg-eth1" owner=root group=root mode=0644
 
   - name: set selinux policy
     selinux: policy=targeted state=permissive
@@ -70,3 +76,9 @@
     with_items:
       - python-dnf
       - libselinux-python
+
+  - name: restart eth1
+    raw: systemctl restart network
+    async: 0
+    poll: 0
+    ignore_errors: true
