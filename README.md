@@ -37,7 +37,7 @@ I've recently updated the preparation process for Ubuntu (the reset will be upda
 
 1. In the `build-os` directory, select which OS you wish to prepare.
 2. Edit the top variables section of `export-os-buildout.sh` file.
-3. Once complete, run the file within the same directory: `./export-os-buildout.sh`.
+3. Once complete, run the file within the same directory: `source ./export-os-buildout.sh`.
 4. Follow the instructions for the remainder of the buildout process.
 
 ####Cockpit Administration (CentOS | Fedora Only):
